@@ -1,4 +1,5 @@
 import Task from "./Task.jsx";
+import "./TaskList.css";
 const TaskList = ({ tasks }) => {
 	return (
 		<>

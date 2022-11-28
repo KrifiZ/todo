@@ -1,7 +1,7 @@
 const Task = ({ id, text }) => {
 	return (
 		<>
-			<li>
+			<li style={{ textAlign: "center" }}>
 				{id} {text}
 			</li>
 		</>
