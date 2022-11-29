@@ -7,9 +7,8 @@ import plus from "./images/plus.svg";
 const taskReducer = (tasks, action) => {
 	switch (action.type) {
 		case "ADD_TASK":
-			return action.text
-				? [...tasks, { id: action.id, text: action.text }]
-				: tasks;
+			if (action.text.trim().length === 0) return tasks;
+			return [...tasks, { id: action.id, text: action.text }];
 	}
 };
 
