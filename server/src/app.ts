@@ -4,6 +4,7 @@ import express from "express";
 import { connectDB } from "./db/connect";
 import { todoRouter } from "./routes/todoRoutes";
 import { notFound } from "./middlewares/not-found";
+import { errorHandlerMiddleware } from "./middlewares/error-handler";
 
 dotenv.config();
 const app = express();
@@ -11,6 +12,7 @@ const app = express();
 app.use(express.json());
 app.use("/api/v1/todos", todoRouter);
 app.use(notFound);
+app.use(errorHandlerMiddleware);
 
 const PORT = process.env.PORT || 5000;
 
