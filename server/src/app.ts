@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import "express-async-errors";
 import express from "express";
+import cors from "cors";
 import { connectDB } from "./db/connect";
 import { todoRouter } from "./routes/todoRoutes";
 import { notFound } from "./middlewares/not-found";
@@ -9,6 +10,7 @@ import { errorHandlerMiddleware } from "./middlewares/error-handler";
 dotenv.config();
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use("/api/v1/todos", todoRouter);
 app.use(notFound);
