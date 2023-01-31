@@ -7,30 +7,21 @@ import { Todo } from "./components/Todo/Todo";
 
 function App() {
 	const [createTodoModal, setTodoModal] = useState(false);
-	const [todos, setTodos] = useState<ITodo[]>([
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-		{ title: "cipka", description: "dupa", priority: "high" },
-	]);
+	const [todos, setTodos] = useState<ITodo[]>([]);
 
 	const todoModalHandler = () => {
 		setTodoModal((prevState) => !prevState);
 	};
 
+	const createTodoHandler = (todo: ITodo) => {
+		setTodos((prevState) => [...prevState, todo]);
+	};
+
 	return (
 		<div className="App">
-			{createTodoModal && <TodoForm onHide={todoModalHandler} />}
+			{createTodoModal && (
+				<TodoForm onHide={todoModalHandler} onCreate={createTodoHandler} />
+			)}
 			<Navbar onClick={todoModalHandler} />
 			<Todos>
 				{todos.map((todo, index) => (

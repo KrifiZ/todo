@@ -10,17 +10,6 @@
 	font: 400 1.5em "Roboto", sans-serif;
 }
 
-.title,
-.priority {
-	height: 3rem;
-}
-
-.description {
-	width: 100%;
-	height: 100%;
-	resize: none;
-}
-
 .createTodo {
 	color: #fffff7;
 	background-color: #504cff;
@@ -34,13 +23,9 @@
 	margin-top: 20px;
 }
 
-.textAreaContainer {
-	position: relative;
-	height: 40%;
-}
-
-.counter {
-	position: absolute;
-	top: 92%;
-	right: 0;
+.form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
 }

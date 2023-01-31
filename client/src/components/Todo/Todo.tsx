@@ -13,7 +13,9 @@ const Todo: React.FC<{ todo: ITodo }> = ({ todo }) => {
 			<label htmlFor={classes.priority} className={classes.label}>
 				priority&nbsp;
 			</label>
-			<p className={classes.priority}>{todo.priority}</p>
+			<p className={`${classes[todo.priority]} ${classes.priority}`}>
+				{todo.priority}
+			</p>
 		</div>
 	);
 };

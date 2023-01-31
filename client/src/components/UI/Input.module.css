@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+
+.title {
+	height: 95%;
+	width: 100%;
+	resize: none;
+}
+
+.container {
+	position: relative;
+	height: 3rem;
+}
+
+.counter {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	font-family: "Roboto", sans-serif;
+}
+
+.error {
+	color: #e92828;
+	font-family: "Roboto", sans-serif;
+}
+
+.title-invalid {
+	border: 1px solid #e92828;
+}

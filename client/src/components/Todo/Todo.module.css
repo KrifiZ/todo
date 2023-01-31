@@ -5,7 +5,7 @@
 	border-radius: 10px;
 	padding: 10px;
 	margin: 10px;
-	grid-column: span 1;
+	max-width: 300px;
 }
 
 .title,
@@ -17,6 +17,8 @@
 
 .description {
 	color: #b6b6bd;
+	width: 100%;
+	word-wrap: break-word;
 }
 
 .line {
@@ -42,4 +44,16 @@
 
 .title {
 	padding-bottom: 10px;
+}
+
+.high {
+	color: #ff0000;
+}
+
+.medium {
+	color: #ff9900;
+}
+
+.low {
+	color: #00ff00;
 }
