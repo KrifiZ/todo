@@ -3,46 +3,47 @@ import classes from "./TextArea.module.css";
 
 interface TextAreaProps {
 	textLength: number;
+	name: string;
+	errorMessage: string;
+	isValid: boolean;
+	isTouch: boolean;
+	formTouch: boolean;
+	focused: boolean;
 	onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-	onValidate: (isValid: boolean) => void;
+	validationHandler: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
+	onFocus: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
 }
 
 const TextArea: React.FC<TextAreaProps> = (props) => {
-	const { onChange, textLength } = props;
-	const [errorMessage, setErrorMessage] = useState("");
-
-	const changeHandler = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-		onChange(event);
-	};
-
-	const validationHandler = (event: React.FocusEvent<HTMLTextAreaElement>) => {
-		if (event.target.value.trim().length > 0) {
-			props.onValidate(true);
-		} else {
-			props.onValidate(false);
-			setErrorMessage("Description is required");
-		}
-	};
+	const {
+		onChange,
+		textLength,
+		validationHandler,
+		onFocus,
+		errorMessage,
+		isValid,
+		isTouch,
+		formTouch,
+		focused,
+	} = props;
+	const isInvalid = (formTouch || isTouch) && !isValid && !focused;
 
 	return (
 		<div className={classes.textAreaContainer}>
 			<textarea
+				name="description"
 				maxLength={250}
 				onBlur={validationHandler}
-				onChange={changeHandler}
-				onFocus={() => setErrorMessage("")}
+				onChange={onChange}
+				onFocus={onFocus}
 				className={`${classes.description} ${
-					errorMessage.length > 0 ? classes["description-invalid"] : ""
+					isInvalid ? classes["description-invalid"] : ""
 				}`}
 			></textarea>
-			<div
-				className={`${classes.counter} ${
-					errorMessage.length > 0 ? classes.error : ""
-				}`}
-			>
+			<div className={`${classes.counter} ${isInvalid ? classes.error : ""}`}>
 				{textLength}/ 250
 			</div>
-			<label className={classes.error}>{errorMessage}</label>
+			<label className={classes.error}>{isInvalid ? errorMessage : ""}</label>
 		</div>
 	);
 };

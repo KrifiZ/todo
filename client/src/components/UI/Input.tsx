@@ -3,46 +3,49 @@ import classes from "./Input.module.css";
 
 interface InputProps {
 	textLength: number;
+	name: string;
+	errorMessage: string;
+	isValid: boolean;
+	isTouch: boolean;
+	formTouch: boolean;
+	focused: boolean;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-	onValidate: (isValid: boolean) => void;
+	validationHandler: (event: React.FocusEvent<HTMLInputElement>) => void;
+	onFocus: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
 
 const Input: React.FC<InputProps> = (props) => {
-	const { onChange, textLength, onValidate } = props;
-	const [errorMessage, setErrorMessage] = useState("");
+	const {
+		onChange,
+		textLength,
+		validationHandler,
+		onFocus,
+		errorMessage,
+		isValid,
+		isTouch,
+		formTouch,
+		focused,
+	} = props;
 
-	const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-		onChange(event);
-	};
-
-	const validationHandler = (event: React.FocusEvent<HTMLInputElement>) => {
-		if (event.target.value.trim().length > 0) {
-			onValidate(true);
-		} else {
-			onValidate(false);
-			setErrorMessage("Description is required");
-		}
-	};
+	const isInvalid = (formTouch || isTouch) && !isValid && !focused;
 
 	return (
 		<div className={classes.container}>
 			<input
+				name="title"
+				type="text"
 				maxLength={18}
-				onChange={changeHandler}
+				onChange={onChange}
 				onBlur={validationHandler}
-				onFocus={() => setErrorMessage("")}
+				onFocus={onFocus}
 				className={`${classes.title} ${
-					errorMessage.length > 0 ? classes["title-invalid"] : ""
+					isInvalid ? classes["title-invalid"] : ""
 				}`}
 			></input>
-			<div
-				className={`${classes.counter} ${
-					errorMessage.length > 0 ? classes.error : ""
-				}`}
-			>
+			<div className={`${classes.counter} ${isInvalid ? classes.error : ""}`}>
 				{textLength}/ 18
 			</div>
-			<label className={classes.error}>{errorMessage}</label>
+			<label className={classes.error}>{isInvalid ? errorMessage : ""}</label>
 		</div>
 	);
 };

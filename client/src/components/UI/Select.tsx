@@ -9,7 +9,12 @@ interface SelectProps {
 const Select = (props: SelectProps) => {
 	const { options, value, onChange } = props;
 	return (
-		<select className={classes.priority} value={value} onChange={onChange}>
+		<select
+			name="select"
+			className={classes.priority}
+			value={value}
+			onChange={onChange}
+		>
 			{options.map((option) => (
 				<option key={option.value} value={option.value}>
 					{option.text}

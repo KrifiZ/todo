@@ -1,8 +1,6 @@
-import { AxiosError } from "axios";
-import { ChangeEvent, useState } from "react";
+import React from "react";
 import { ITodo } from "../../@types/Todo";
 import { useForm } from "../../hooks/useForm";
-import { useHttp } from "../../hooks/useHttp";
 import { Input } from "../UI/Input";
 import { Modal } from "../UI/Modal";
 import { Select } from "../UI/Select";
@@ -15,15 +13,12 @@ interface TodoFormProps {
 }
 
 const TodoForm: React.FC<TodoFormProps> = (props) => {
-	const [sectionValue, setSection] = useState<"low" | "medium" | "high">(
-		"medium"
-	);
-
 	const form = useForm({
-		values: { title: "", description: "" },
+		values: { title: "", description: "", select: "medium" },
 		isTouched: {
 			title: false,
 			description: false,
+			formm: false,
 		},
 		isValid: {
 			title: false,
@@ -31,62 +26,43 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 		},
 	});
 
-	const [titleValue, setTitle] = useState("");
-	const [descriptionValue, setDescription] = useState("");
-	const [isTitleValid, setIsTitleValid] = useState(false);
-	const [isDescriptionValid, setIsDescriptionValid] = useState(false);
-	const postTodo = useHttp();
-
 	const createTodo = () => {
+		const { title, description, select } = form.values;
+
 		const todo: ITodo = {
-			title: titleValue,
-			description: descriptionValue,
-			priority: sectionValue,
+			title: title,
+			description: description,
+			priority: select as "low" | "medium" | "high",
 		};
 
 		props.onCreate(todo);
 		props.onHide();
 	};
 
-	const submitForm = async (e: ChangeEvent<HTMLFormElement>) => {
-		e.preventDefault();
-
-		try {
-			if (isTitleValid && isDescriptionValid) {
-				await postTodo.sendRequest(
-					{
-						url: "http://localhost:5000/api/v1/todos",
-						method: "POST",
-						headers: {
-							"Content-type": "application/json",
-						},
-						data: {
-							title: titleValue,
-							description: descriptionValue,
-							priority: sectionValue,
-						},
-					},
-					createTodo
-				);
-			}
-		} catch (error: unknown) {
-			console.log(error);
-		}
-	};
-
 	return (
 		<Modal onHide={props.onHide}>
-			<form onSubmit={submitForm} className={classes.form}>
+			<form
+				name="formm"
+				onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
+					form.handleSubmit(event, createTodo);
+				}}
+				className={classes.form}
+			>
 				<h2 className={classes.header}>Create Todo</h2>
 				<label htmlFor="title" className={classes.label}>
 					title
 				</label>
 				<Input
-					textLength={titleValue.length}
-					onChange={(e: ChangeEvent<HTMLInputElement>) => {
-						setTitle(e.target.value);
-					}}
-					onValidate={setIsTitleValid}
+					name="title"
+					errorMessage="Title is required"
+					textLength={form.values.title.length}
+					onChange={form.handleChange}
+					onFocus={form.handleFocus}
+					isValid={form.valid.title}
+					isTouch={form.touch.title}
+					formTouch={form.touch.formm}
+					focused={form.focusedInput === "title"}
+					validationHandler={form.handleValidation}
 				/>
 				<label className={classes.label}>priority</label>
 				<Select
@@ -95,18 +71,21 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 						{ text: "medium", value: "medium" },
 						{ text: "high", value: "high" },
 					]}
-					value={sectionValue}
-					onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-						setSection(e.target.value as "low" | "medium" | "high");
-					}}
+					value={form.values.select}
+					onChange={form.handleChange}
 				/>
 				<label className={classes.label}>description</label>
 				<TextArea
-					onChange={(e: ChangeEvent<HTMLTextAreaElement>) => {
-						setDescription(e.target.value);
-					}}
-					textLength={descriptionValue.length}
-					onValidate={setIsDescriptionValid}
+					name="description"
+					errorMessage="Description is required"
+					textLength={form.values.description.length}
+					onChange={form.handleChange}
+					onFocus={form.handleFocus}
+					isValid={form.valid.description}
+					isTouch={form.touch.description}
+					formTouch={form.touch.formm}
+					focused={form.focusedInput === "description"}
+					validationHandler={form.handleValidation}
 				/>
 				<button type="submit" className={classes.createTodo}>
 					Create

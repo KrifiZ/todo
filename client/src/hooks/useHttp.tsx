@@ -1,29 +1,6 @@
 import { useCallback, useState } from "react";
 import axios, { AxiosError } from "axios";
-
-interface RequestConfig {
-	url: string;
-	method: "GET" | "POST" | "PUT" | "DELETE";
-	headers?: { [key: string]: string };
-	data?: { [key: string]: string };
-}
-
-interface ResponseData {
-	[key: string]: any;
-}
-
-interface ResponseError {
-	message: string;
-}
-
-interface Response {
-	data: ResponseData;
-	error: ResponseError;
-}
-
-interface ApplyData {
-	(data: ResponseData): void;
-}
+import { ApplyData, RequestConfig } from "../@types/HttpRequest";
 
 const useHttp = () => {
 	const [isLoading, setIsLoading] = useState(false);
@@ -38,12 +15,12 @@ const useHttp = () => {
 				applyData(response.data);
 			} catch (err: unknown) {
 				if (err instanceof AxiosError) {
-					setError(err.response!.data.msg || "Something went wrong!");
+					setError(err.response?.data?.msg || "Something went wrong!");
 				}
 			}
 			setIsLoading(false);
 		},
-		[]
+		[setIsLoading, setError]
 	);
 
 	return {
