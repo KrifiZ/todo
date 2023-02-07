@@ -4,6 +4,8 @@
 	height: 95%;
 	width: 100%;
 	resize: none;
+	overflow: scroll;
+	background-color: #fff;
 }
 
 .container {
@@ -13,7 +15,7 @@
 
 .counter {
 	position: absolute;
-	bottom: 0;
+	bottom: 4px;
 	right: 0;
 	font-family: "Roboto", sans-serif;
 }
@@ -21,6 +23,8 @@
 .error {
 	color: #e92828;
 	font-family: "Roboto", sans-serif;
+	display: block;
+	height: 18px;
 }
 
 .title-invalid {

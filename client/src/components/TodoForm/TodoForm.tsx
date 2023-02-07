@@ -1,20 +1,28 @@
-import React from "react";
+import React, { useContext } from "react";
+import { TodosContext } from "../../store/todos-context";
 import { ITodo } from "../../@types/Todo";
 import { useForm } from "../../hooks/useForm";
-import { Input } from "../UI/Input";
-import { Modal } from "../UI/Modal";
-import { Select } from "../UI/Select";
-import { TextArea } from "../UI/TextArea";
+import { Input } from "../UI/Inputs/Input";
+import { Modal } from "../UI/Modals/Modal";
+import { Select } from "../UI/Selects/Select";
+import { TextArea } from "../UI/TextAreas/TextArea";
 import classes from "./TodoForm.module.css";
 
 interface TodoFormProps {
+	name: string;
+	title: string;
+	submitText: string;
+	todo?: ITodo;
 	onHide: () => void;
-	onCreate: (todos: ITodo) => void;
 }
 
 const TodoForm: React.FC<TodoFormProps> = (props) => {
 	const form = useForm({
-		values: { title: "", description: "", select: "medium" },
+		values: {
+			title: props.todo?.title || "",
+			description: props.todo?.description || "",
+			select: props.todo?.priority || "medium",
+		},
 		isTouched: {
 			title: false,
 			description: false,
@@ -25,30 +33,38 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 			description: false,
 		},
 	});
+	const { addTodo, updateTodo, setTodoModal } = useContext(TodosContext);
 
-	const createTodo = () => {
-		const { title, description, select } = form.values;
-
-		const todo: ITodo = {
-			title: title,
-			description: description,
-			priority: select as "low" | "medium" | "high",
-		};
-
-		props.onCreate(todo);
-		props.onHide();
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const { name } = e.currentTarget;
+		const { todo } = props as TodoFormProps;
+		form.setTouched((prevTouched) => ({ ...prevTouched, ["formm"]: true }));
+		if (form.valid.title && form.valid.description) {
+			if (todo) {
+				const newTodo: ITodo = {
+					_id: todo._id,
+					title: form.values.title,
+					priority: form.values.select as "low" | "medium" | "high",
+					description: form.values.description,
+				};
+				updateTodo(todo._id, newTodo);
+			} else {
+				const { title, description, select: priority } = form.values;
+				addTodo({
+					title: title,
+					description: description,
+					priority: priority as "low" | "medium" | "high",
+				});
+			}
+			props.onHide();
+		}
 	};
 
 	return (
 		<Modal onHide={props.onHide}>
-			<form
-				name="formm"
-				onSubmit={(event: React.ChangeEvent<HTMLFormElement>) => {
-					form.handleSubmit(event, createTodo);
-				}}
-				className={classes.form}
-			>
-				<h2 className={classes.header}>Create Todo</h2>
+			<form name={props.name} onSubmit={handleSubmit} className={classes.form}>
+				<h2 className={classes.header}>{props.title}</h2>
 				<label htmlFor="title" className={classes.label}>
 					title
 				</label>
@@ -60,6 +76,7 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 					onFocus={form.handleFocus}
 					isValid={form.valid.title}
 					isTouch={form.touch.title}
+					value={form.values.title}
 					formTouch={form.touch.formm}
 					focused={form.focusedInput === "title"}
 					validationHandler={form.handleValidation}
@@ -85,10 +102,11 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 					isTouch={form.touch.description}
 					formTouch={form.touch.formm}
 					focused={form.focusedInput === "description"}
+					value={form.values.description}
 					validationHandler={form.handleValidation}
 				/>
 				<button type="submit" className={classes.createTodo}>
-					Create
+					{props.submitText}
 				</button>
 			</form>
 		</Modal>

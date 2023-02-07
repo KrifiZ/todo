@@ -4,6 +4,7 @@ interface BasicProps {
 }
 
 interface ITodo {
+	_id: string;
 	title: string;
 	priority: "low" | "medium" | "high";
 	description: string;

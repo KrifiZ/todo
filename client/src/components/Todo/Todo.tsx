@@ -1,7 +1,13 @@
 import { ITodo } from "../../@types/Todo";
+import { TodoButton } from "../UI/Buttons/TodoButton";
 import classes from "./Todo.module.css";
+interface TodoProps {
+	todo: ITodo;
+	onEdit: (id: string) => void;
+	onDelete: (id: string) => void;
+}
 
-const Todo: React.FC<{ todo: ITodo }> = ({ todo }) => {
+const Todo: React.FC<TodoProps> = ({ todo, onDelete, onEdit }) => {
 	return (
 		<div className={classes.backdrop}>
 			<h2 className={classes.title}>{todo.title}</h2>
@@ -16,6 +22,16 @@ const Todo: React.FC<{ todo: ITodo }> = ({ todo }) => {
 			<p className={`${classes[todo.priority]} ${classes.priority}`}>
 				{todo.priority}
 			</p>
+			<TodoButton
+				customStyles={classes.edit}
+				onClick={(e) => onEdit(todo._id)}
+				text="EDIT"
+			/>
+			<TodoButton
+				customStyles={classes.delete}
+				onClick={(e) => onDelete(todo._id)}
+				text="DELETE"
+			/>
 		</div>
 	);
 };

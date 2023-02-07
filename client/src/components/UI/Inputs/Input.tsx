@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import classes from "./TextArea.module.css";
+import classes from "./Input.module.css";
 
-interface TextAreaProps {
+interface InputProps {
 	textLength: number;
 	name: string;
+	value: string;
 	errorMessage: string;
 	isValid: boolean;
 	isTouch: boolean;
 	formTouch: boolean;
 	focused: boolean;
-	onChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
-	validationHandler: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
-	onFocus: (event: React.FocusEvent<HTMLTextAreaElement>) => void;
+	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+	validationHandler: (event: React.FocusEvent<HTMLInputElement>) => void;
+	onFocus: (event: React.FocusEvent<HTMLInputElement>) => void;
 }
 
-const TextArea: React.FC<TextAreaProps> = (props) => {
+const Input: React.FC<InputProps> = (props) => {
 	const {
 		onChange,
 		textLength,
@@ -26,26 +27,29 @@ const TextArea: React.FC<TextAreaProps> = (props) => {
 		formTouch,
 		focused,
 	} = props;
+
 	const isInvalid = (formTouch || isTouch) && !isValid && !focused;
 
 	return (
-		<div className={classes.textAreaContainer}>
-			<textarea
-				name="description"
-				maxLength={250}
-				onBlur={validationHandler}
+		<div className={classes.container}>
+			<input
+				name="title"
+				type="text"
+				value={props.value}
+				maxLength={18}
 				onChange={onChange}
+				onBlur={validationHandler}
 				onFocus={onFocus}
-				className={`${classes.description} ${
-					isInvalid ? classes["description-invalid"] : ""
+				className={`${classes.title} ${
+					isInvalid ? classes["title-invalid"] : ""
 				}`}
-			></textarea>
+			></input>
 			<div className={`${classes.counter} ${isInvalid ? classes.error : ""}`}>
-				{textLength}/ 250
+				{textLength}/ 18
 			</div>
 			<label className={classes.error}>{isInvalid ? errorMessage : ""}</label>
 		</div>
 	);
 };
 
-export { TextArea };
+export { Input };

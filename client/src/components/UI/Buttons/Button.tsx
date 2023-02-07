@@ -1,4 +1,4 @@
-import { BasicProps } from "../../@types/Todo";
+import { BasicProps } from "../../../@types/Todo";
 import classes from "./Button.module.css";
 
 const Button: React.FC<BasicProps> = (props) => {

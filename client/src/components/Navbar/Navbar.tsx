@@ -1,4 +1,4 @@
-import { Button } from "../UI/Button";
+import { Button } from "../UI/Buttons/Button";
 import classes from "./Navbar.module.css";
 import { BasicProps } from "../../@types/Todo";
 

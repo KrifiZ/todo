@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ApplyData } from "../@types/HttpRequest";
+import { ITodo } from "../@types/Todo";
 import { useHttp } from "./useHttp";
+import { useTodoActions } from "./useTodoActions";
 
 interface FormValues {
 	values: Record<string, string>;
@@ -19,7 +21,6 @@ const useForm = (initialValues: FormValues) => {
 	const [values, setValues] = useState(initialValues.values);
 	const [touch, setTouched] = useState(initialValues.isTouched);
 	const [valid, setValid] = useState(initialValues.isValid);
-	const postTodo = useHttp();
 
 	const handleChange = (
 		e: React.ChangeEvent<
@@ -53,48 +54,44 @@ const useForm = (initialValues: FormValues) => {
 		setFocusedInput(name);
 	};
 
-	const handleSubmit = async (
-		e: React.ChangeEvent<HTMLFormElement>,
-		callback: ApplyData
-	) => {
-		e.preventDefault();
-		const { name } = e.target as HTMLFormElement;
-		const { title: isTitleValid, description: isDescriptionValid } = valid;
-		const {
-			title: titleValue,
-			description: descriptionValue,
-			section: sectionValue,
-		} = values;
-		setTouched((prevTouched) => ({ ...prevTouched, [name]: true }));
-		try {
-			if (isTitleValid && isDescriptionValid) {
-				await postTodo.sendRequest(
-					{
-						url: "http://localhost:5000/api/v1/todos",
-						method: "POST",
-						headers: {
-							"Content-type": "application/json",
-						},
-						data: {
-							title: titleValue,
-							description: descriptionValue,
-							priority: sectionValue,
-						},
-					},
-					callback
-				);
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	};
+	// const handleSubmit = (
+	// 	e: React.FormEvent<HTMLFormElement>,
+	// 	todo,
+	// 	onHide,
+	// 	updateTodo,
+	// 	addTodo
+	// ) => {
+	// 	e.preventDefault();
+	// 	const { name } = e.currentTarget;
+	// 	setTouched((prevTouched) => ({ ...prevTouched, ["formm"]: true }));
+	// 	if (valid.title && valid.description) {
+	// 		if (todo) {
+	// 			const newTodo: ITodo = {
+	// 				_id: todo._id,
+	// 				title: values.title,
+	// 				priority: values.select as "low" | "medium" | "high",
+	// 				description: values.description,
+	// 			};
+	// 			updateTodo(todo._id, newTodo);
+	// 		} else {
+	// 			const { title, description, select: priority } = values;
+	// 			addTodo({
+	// 				title: title,
+	// 				description: description,
+	// 				priority: priority as "low" | "medium" | "high",
+	// 			});
+	// 		}
+	// 		onHide();
+	// 	}
+	// };
 
 	return {
 		values,
 		handleChange,
 		handleValidation,
-		handleSubmit,
+		// handleSubmit,
 		handleFocus,
+		setTouched,
 		touch,
 		valid,
 		focusedInput,

@@ -1,6 +1,7 @@
 interface RequestConfig {
 	url: string;
-	method: "GET" | "POST" | "PUT" | "DELETE";
+	baseURL?: string;
+	method: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 	headers?: { [key: string]: string };
 	data?: { [key: string]: string };
 }

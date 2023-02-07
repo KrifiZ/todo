@@ -1,50 +1,31 @@
-import { SetStateAction, useEffect, useState } from "react";
 import { Navbar } from "./components/Navbar/Navbar";
-import { ITodo } from "./@types/Todo";
 import { TodoForm } from "./components/TodoForm/TodoForm";
 import { Todos } from "./components/Todos/Todos";
-import { Todo } from "./components/Todo/Todo";
-import { useHttp } from "./hooks/useHttp";
-import { ResponseData } from "./@types/HttpRequest";
-import { AxiosError } from "axios";
-function App() {
-	const [createTodoModal, setTodoModal] = useState(false);
-	const [todos, setTodos] = useState<ITodo[]>([]);
-	const getTodos = useHttp();
+import { TodosContext, TodosContextProvider } from "./store/todos-context";
+import { useContext, useState } from "react";
 
-	useEffect(() => {
-		getTodos.sendRequest(
-			{
-				url: "http://localhost:5000/api/v1/todos",
-				method: "GET",
-			},
-			(data: ResponseData) => {
-				const todos = data as ITodo[];
-				setTodos(todos);
-			}
-		);
-	}, []);
+function App() {
+	const [createTodoModal, setCreateTodoModal] = useState(false);
 
 	const todoModalHandler = () => {
-		setTodoModal((prevState) => !prevState);
-	};
-
-	const createTodoHandler = (todo: ITodo) => {
-		setTodos((prevState) => [...prevState, todo]);
+		setCreateTodoModal((prevState) => !prevState);
 	};
 
 	return (
-		<div className="App">
-			{createTodoModal && (
-				<TodoForm onHide={todoModalHandler} onCreate={createTodoHandler} />
-			)}
-			<Navbar onClick={todoModalHandler} />
-			<Todos>
-				{todos.map((todo, index) => (
-					<Todo key={index} todo={todo} />
-				))}
-			</Todos>
-		</div>
+		<TodosContextProvider>
+			<div className="App">
+				{createTodoModal && (
+					<TodoForm
+						name="addTodo"
+						title="Create Todo"
+						submitText="Create Todo"
+						onHide={todoModalHandler}
+					/>
+				)}
+				<Navbar onClick={todoModalHandler} />
+				<Todos />
+			</div>
+		</TodosContextProvider>
 	);
 }
 
