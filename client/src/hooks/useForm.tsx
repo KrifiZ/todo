@@ -1,26 +1,47 @@
 import React, { useState } from "react";
-import { ApplyData } from "../@types/HttpRequest";
 import { ITodo } from "../@types/Todo";
-import { useHttp } from "./useHttp";
-import { useTodoActions } from "./useTodoActions";
 
 interface FormValues {
 	values: Record<string, string>;
-	isTouched: Record<string, boolean>;
-	isValid: Record<string, boolean>;
+	touch: Record<string, boolean>;
+	valid: Record<string, boolean>;
 }
 
 interface FormProps {
-	title: string | boolean;
-	description: string | boolean;
-	section: "low" | "medium" | "high";
+	title: string;
+	description: string;
+	priority: "low" | "medium" | "high";
 }
 
-const useForm = (initialValues: FormValues) => {
+interface UseForm {
+	values: FormValues["values"];
+	touch: FormValues["touch"];
+	valid: FormValues["valid"];
+	focusedInput: string | null;
+	handleChange: (
+		e: React.ChangeEvent<
+			HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+		>
+	) => void;
+	handleValidation: (
+		e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => void;
+	handleSubmit: (e: React.FormEvent<HTMLFormElement>, id?: string) => void;
+	handleFocus: (
+		e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => void;
+}
+
+export const useForm = (
+	initialValues: FormValues,
+	addTodo: (todo: FormProps) => void,
+	updateTodo: (id: string, data: ITodo) => void,
+	onHide: () => void
+): UseForm => {
 	const [focusedInput, setFocusedInput] = useState<string | null>(null);
 	const [values, setValues] = useState(initialValues.values);
-	const [touch, setTouched] = useState(initialValues.isTouched);
-	const [valid, setValid] = useState(initialValues.isValid);
+	const [touch, setTouched] = useState(initialValues.touch);
+	const [valid, setValid] = useState(initialValues.valid);
 
 	const handleChange = (
 		e: React.ChangeEvent<
@@ -54,48 +75,38 @@ const useForm = (initialValues: FormValues) => {
 		setFocusedInput(name);
 	};
 
-	// const handleSubmit = (
-	// 	e: React.FormEvent<HTMLFormElement>,
-	// 	todo,
-	// 	onHide,
-	// 	updateTodo,
-	// 	addTodo
-	// ) => {
-	// 	e.preventDefault();
-	// 	const { name } = e.currentTarget;
-	// 	setTouched((prevTouched) => ({ ...prevTouched, ["formm"]: true }));
-	// 	if (valid.title && valid.description) {
-	// 		if (todo) {
-	// 			const newTodo: ITodo = {
-	// 				_id: todo._id,
-	// 				title: values.title,
-	// 				priority: values.select as "low" | "medium" | "high",
-	// 				description: values.description,
-	// 			};
-	// 			updateTodo(todo._id, newTodo);
-	// 		} else {
-	// 			const { title, description, select: priority } = values;
-	// 			addTodo({
-	// 				title: title,
-	// 				description: description,
-	// 				priority: priority as "low" | "medium" | "high",
-	// 			});
-	// 		}
-	// 		onHide();
-	// 	}
-	// };
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>, id?: string) => {
+		e.preventDefault();
+		if (Object.values(valid).every((value) => value)) {
+			const formData: FormProps = {
+				title: values.title,
+				description: values.description,
+				priority: values.priority as "low" | "medium" | "high",
+			};
+			if (id) {
+				updateTodo(id, { ...formData, _id: id });
+			} else {
+				addTodo(formData);
+			}
+			onHide();
+		} else {
+			setTouched(
+				Object.keys(values).reduce(
+					(acc, key) => ({ ...acc, [key]: true }),
+					initialValues.touch
+				)
+			);
+		}
+	};
 
 	return {
 		values,
 		handleChange,
 		handleValidation,
-		// handleSubmit,
+		handleSubmit,
 		handleFocus,
-		setTouched,
 		touch,
 		valid,
 		focusedInput,
 	};
 };
-
-export { useForm };

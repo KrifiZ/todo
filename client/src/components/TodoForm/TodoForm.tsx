@@ -17,53 +17,36 @@ interface TodoFormProps {
 }
 
 const TodoForm: React.FC<TodoFormProps> = (props) => {
-	const form = useForm({
-		values: {
-			title: props.todo?.title || "",
-			description: props.todo?.description || "",
-			select: props.todo?.priority || "medium",
+	const { addTodo, updateTodo } = useContext(TodosContext);
+	const form = useForm(
+		{
+			values: {
+				title: props.todo?.title || "",
+				description: props.todo?.description || "",
+				priority: props.todo?.priority || "medium",
+			},
+			touch: {
+				title: false,
+				description: false,
+				formm: false,
+			},
+			valid: {
+				title: props.todo ? true : false,
+				description: props.todo ? true : false,
+			},
 		},
-		isTouched: {
-			title: false,
-			description: false,
-			formm: false,
-		},
-		isValid: {
-			title: false,
-			description: false,
-		},
-	});
-	const { addTodo, updateTodo, setTodoModal } = useContext(TodosContext);
-
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const { name } = e.currentTarget;
-		const { todo } = props as TodoFormProps;
-		form.setTouched((prevTouched) => ({ ...prevTouched, ["formm"]: true }));
-		if (form.valid.title && form.valid.description) {
-			if (todo) {
-				const newTodo: ITodo = {
-					_id: todo._id,
-					title: form.values.title,
-					priority: form.values.select as "low" | "medium" | "high",
-					description: form.values.description,
-				};
-				updateTodo(todo._id, newTodo);
-			} else {
-				const { title, description, select: priority } = form.values;
-				addTodo({
-					title: title,
-					description: description,
-					priority: priority as "low" | "medium" | "high",
-				});
-			}
-			props.onHide();
-		}
-	};
+		addTodo,
+		updateTodo,
+		props.onHide
+	);
 
 	return (
 		<Modal onHide={props.onHide}>
-			<form name={props.name} onSubmit={handleSubmit} className={classes.form}>
+			<form
+				name={props.name}
+				onSubmit={(event: any) => form.handleSubmit(event, props.todo?._id)}
+				className={classes.form}
+			>
 				<h2 className={classes.header}>{props.title}</h2>
 				<label htmlFor="title" className={classes.label}>
 					title
@@ -77,7 +60,7 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 					isValid={form.valid.title}
 					isTouch={form.touch.title}
 					value={form.values.title}
-					formTouch={form.touch.formm}
+					formTouch={form.touch.form}
 					focused={form.focusedInput === "title"}
 					validationHandler={form.handleValidation}
 				/>
@@ -100,7 +83,7 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 					onFocus={form.handleFocus}
 					isValid={form.valid.description}
 					isTouch={form.touch.description}
-					formTouch={form.touch.formm}
+					formTouch={form.touch.form}
 					focused={form.focusedInput === "description"}
 					value={form.values.description}
 					validationHandler={form.handleValidation}
