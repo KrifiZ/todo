@@ -15,6 +15,11 @@ const TodoSchema = new mongoose.Schema<ITodo>({
 		enum: ["low", "medium", "high"],
 		default: "medium",
 	},
+	status: {
+		type: String,
+		enum: ["in-progress", "completed"],
+		default: "in-progress",
+	},
 });
 
 const Todo = mongoose.model<ITodo>("Todo", TodoSchema);

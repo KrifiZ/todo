@@ -24,7 +24,7 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 				title: props.todo?.title || "",
 				description: props.todo?.description || "",
 				priority: props.todo?.priority || "medium",
-				status: props.todo?.status || "in progress",
+				status: props.todo?.status || "in-progress",
 			},
 			touch: {
 				title: false,
@@ -75,7 +75,7 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 						{ text: "medium", value: "medium" },
 						{ text: "high", value: "high" },
 					]}
-					value={form.values.select}
+					value={form.values.priority}
 					onChange={form.handleChange}
 				/>
 				<label htmlFor="status" className={classes.label}>
@@ -85,7 +85,7 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 					name="status"
 					options={[
 						{ text: "completed", value: "completed" },
-						{ text: "in progress", value: "in progress" },
+						{ text: "in-progress", value: "in-progress" },
 					]}
 					value={form.values.status}
 					onChange={form.handleChange}
