@@ -1,6 +1,7 @@
 import classes from "./Select.module.css";
 
 interface SelectProps {
+	name: string;
 	options: { value: string; text: string }[];
 	onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
 	value: string;
@@ -10,7 +11,7 @@ const Select = (props: SelectProps) => {
 	const { options, value, onChange } = props;
 	return (
 		<select
-			name="select"
+			name={props.name}
 			className={classes.priority}
 			value={value}
 			onChange={onChange}

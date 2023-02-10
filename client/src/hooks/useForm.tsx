@@ -11,6 +11,7 @@ interface FormProps {
 	title: string;
 	description: string;
 	priority: "low" | "medium" | "high";
+	status: string;
 }
 
 interface UseForm {
@@ -82,12 +83,13 @@ export const useForm = (
 				title: values.title,
 				description: values.description,
 				priority: values.priority as "low" | "medium" | "high",
+				status: values.status,
 			};
-			if (id) {
-				updateTodo(id, { ...formData, _id: id });
-			} else {
-				addTodo(formData);
-			}
+			// if (id) {
+			// 	updateTodo(id, { ...formData, _id: id });
+			// } else {
+			// 	addTodo(formData);
+			// }
 			onHide();
 		} else {
 			setTouched(

@@ -8,6 +8,7 @@ interface ITodo {
 	title: string;
 	priority: "low" | "medium" | "high";
 	description: string;
+	status: string;
 }
 
 export type { BasicProps, ITodo };

@@ -24,6 +24,7 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 				title: props.todo?.title || "",
 				description: props.todo?.description || "",
 				priority: props.todo?.priority || "medium",
+				status: props.todo?.status || "in progress",
 			},
 			touch: {
 				title: false,
@@ -64,14 +65,29 @@ const TodoForm: React.FC<TodoFormProps> = (props) => {
 					focused={form.focusedInput === "title"}
 					validationHandler={form.handleValidation}
 				/>
-				<label className={classes.label}>priority</label>
+				<label htmlFor="priority" className={classes.label}>
+					priority
+				</label>
 				<Select
+					name="priority"
 					options={[
 						{ text: "low", value: "low" },
 						{ text: "medium", value: "medium" },
 						{ text: "high", value: "high" },
 					]}
 					value={form.values.select}
+					onChange={form.handleChange}
+				/>
+				<label htmlFor="status" className={classes.label}>
+					status
+				</label>
+				<Select
+					name="status"
+					options={[
+						{ text: "completed", value: "completed" },
+						{ text: "in progress", value: "in progress" },
+					]}
+					value={form.values.status}
 					onChange={form.handleChange}
 				/>
 				<label className={classes.label}>description</label>
