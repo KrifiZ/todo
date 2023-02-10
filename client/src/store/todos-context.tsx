@@ -61,6 +61,7 @@ const TodosContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
 							description: todo.description,
 							priority: todo.priority,
 							title: todo.title,
+							status: todo.status,
 						};
 					}
 					return prevTodo;

@@ -8,18 +8,25 @@ interface TodoProps {
 }
 
 const Todo: React.FC<TodoProps> = ({ todo, onDelete, onEdit }) => {
+	const stroke = todo.status === "completed" ? classes.completed : " ";
 	return (
-		<div className={classes.backdrop}>
-			<h2 className={classes.title}>{todo.title}</h2>
-			<hr className={classes.line} />
-			<label htmlFor={classes.description} className={classes.label}>
+		<div className={`${classes.backdrop}`}>
+			<h2 className={`${classes.title} ${stroke}`}>{todo.title}</h2>
+			<hr className={`${classes.line} ${stroke}`} />
+			<label
+				htmlFor={classes.description}
+				className={`${classes.label} ${stroke}`}
+			>
 				description&nbsp;
 			</label>
-			<p className={classes.description}>{todo.description}</p>
-			<label htmlFor={classes.priority} className={classes.label}>
+			<p className={`${classes.description} ${stroke}`}>{todo.description}</p>
+			<label
+				htmlFor={classes.priority}
+				className={`${classes.label} ${stroke}`}
+			>
 				priority&nbsp;
 			</label>
-			<p className={`${classes[todo.priority]} ${classes.priority}`}>
+			<p className={`${classes[todo.priority]} ${classes.priority} ${stroke}`}>
 				{todo.priority}
 			</p>
 			<TodoButton
