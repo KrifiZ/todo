@@ -1,0 +1,9 @@
+.btn {
+	width: calc(100% + 20px);
+	height: 3.5vh;
+	font-size: 14px;
+	color: #ffffff;
+	font-family: "Roboto", sans-serif;
+	border: none;
+	margin: 0 0 0 -10px;
+}

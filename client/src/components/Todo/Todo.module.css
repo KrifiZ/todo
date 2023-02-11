@@ -1,0 +1,90 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+
+.backdrop {
+	background-color: #21213a;
+	border-radius: 10px;
+	padding: 10px;
+	margin: 5px;
+	min-width: 290px;
+	min-height: 300px;
+	display: flex;
+	flex-direction: column;
+}
+
+.backdrop:nth-child(5n + 1):nth-last-child(-n + 3),
+.backdrop:nth-child(5n + 2):nth-last-child(-n + 3),
+.backdrop:nth-child(5n + 3):nth-last-child(-n + 3),
+.backdrop:nth-child(5n + 4):nth-last-child(-n + 3),
+.backdrop:nth-last-child(1),
+.backdrop:nth-last-child(2),
+.backdrop:nth-last-child(3) {
+	flex-grow: 0;
+}
+
+.backdrop button:nth-last-of-type(2) {
+	margin-top: auto;
+}
+
+.title,
+.description,
+.priority {
+	color: #fdfdfd;
+	font-family: "Roboto", sans-serif;
+}
+
+.description {
+	color: #b6b6bd;
+	width: 100%;
+	word-wrap: break-word;
+}
+
+.line {
+	border: none;
+	height: 1px;
+	background-color: #14142a;
+	margin: 0 -10px;
+}
+
+.label {
+	display: block;
+	float: left;
+	color: #fdfdfd;
+	font-family: "Roboto", sans-serif;
+	gap: 5px;
+}
+
+.label,
+.description,
+.priority {
+	padding-top: 10px;
+}
+
+.title {
+	padding-bottom: 10px;
+}
+
+.high {
+	color: #ff0000;
+}
+
+.medium {
+	color: #ff9900;
+}
+
+.low {
+	color: #00ff00;
+}
+
+.edit {
+	background-color: #007bff;
+	justify-content: flex-end;
+}
+
+.delete {
+	background-color: #dc3545;
+	justify-content: flex-end;
+}
+
+.completed {
+	text-decoration: line-through;
+}

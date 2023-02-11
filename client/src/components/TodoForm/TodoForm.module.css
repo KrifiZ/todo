@@ -1,0 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap");
+
+.header {
+	color: #fb9ee7;
+	font: 500 3em "Roboto", sans-serif;
+}
+
+.label {
+	color: #c3c3c3;
+	font: 400 1.5em "Roboto", sans-serif;
+}
+
+.createTodo {
+	color: #fffff7;
+	background-color: #504cff;
+	height: 3rem;
+	font-size: 1.5em;
+	border: none;
+}
+
+.label,
+.createTodo {
+	margin-top: 20px;
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}

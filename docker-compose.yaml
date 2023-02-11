@@ -1,0 +1,17 @@
+version: "3"
+services:
+  client:
+    build: ./client
+    ports:
+      - "5137:5173"
+    networks:
+      - mynetwork
+  server:
+    build: ./server
+    ports:
+      - "5000:5000"
+    networks:
+      - mynetwork
+networks:
+  mynetwork:
+    driver: bridge
