@@ -2,8 +2,10 @@
 ## Installation
 Clone the repository:
 
-git clone https://github.com/KrifiZ/todo.git <br>
-cd todo <br>
+```sh
+git clone https://github.com/KrifiZ/todo.git
+cd todo 
+```
 Install the dependencies: <br>
 ```sh
 npm install
