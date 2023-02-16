@@ -10,7 +10,7 @@ npm install
 ```
 Create a .env file in the root directory of the project with the following contents:
 ```sh
-MONGO_URI=mongodb://mongodb:27017/todo
+MONGO_URI=mongodb://mongodb:27017/your-database-name
 ```
 Replace your-database-name with the name of the MongoDB database you want to use.
 Start the services with docker-compose: <br>
