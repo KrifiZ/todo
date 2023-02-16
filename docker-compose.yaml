@@ -1,9 +1,9 @@
 version: "3"
 services:
-  client:
-    build: ./client
+  mongodb:
+    image: mongo
     ports:
-      - "5137:5173"
+      - "27017:27017"
     networks:
       - mynetwork
   server:
@@ -12,6 +12,16 @@ services:
       - "5000:5000"
     networks:
       - mynetwork
+    depends_on:
+      - mongodb
+  client:
+    build: ./client
+    ports:
+      - "5137:5173"
+    networks:
+      - mynetwork
+    depends_on:
+      - server
 networks:
   mynetwork:
     driver: bridge
